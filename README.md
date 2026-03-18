@@ -7,7 +7,7 @@
 [![LangChain](https://img.shields.io/badge/LangChain-0.2-green.svg)](https://python.langchain.com)
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-0.5-orange.svg)](https://docs.trychroma.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![CI](https://github.com/YOUR_USERNAME/ragforge/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/ragforge/actions)
+[![CI](https://github.com/Shashank-K-V/ragforge/actions/workflows/ci.yml/badge.svg)](https://github.com/Shashank-K-V/ragforge/actions)
 
 ---
 
