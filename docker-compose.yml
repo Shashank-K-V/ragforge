@@ -1,0 +1,69 @@
+# ======================================================================= #
+#  RAGForge — docker-compose for local development                          #
+#                                                                           #
+#  Usage:                                                                   #
+#    docker-compose up --build          # first run (builds image)          #
+#    docker-compose up                  # subsequent runs (uses cache)      #
+#    docker-compose down -v             # stop and remove volumes            #
+# ======================================================================= #
+
+version: "3.9"
+
+services:
+  ragforge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # Use the runtime stage for local dev too (smaller image)
+      target: runtime
+    image: ragforge:dev
+    container_name: ragforge_api
+
+    # Forward container port 7860 → host port 7860
+    ports:
+      - "7860:7860"
+
+    # Load environment variables from .env (copy from .env.example first)
+    env_file:
+      - .env
+
+    # Override specific env vars for docker-compose (host paths differ)
+    environment:
+      - CHROMA_PERSIST_DIR=/app/chroma_db
+      - UPLOAD_DIR=/app/uploaded_docs
+      - HOST=0.0.0.0
+      - PORT=7860
+
+    # Named volumes so chroma_db and uploads survive container restarts
+    volumes:
+      - chroma_data:/app/chroma_db
+      - upload_data:/app/uploaded_docs
+      # Mount app source for hot-reload during development
+      - ./app:/app/app:ro
+      # Mount docs directory so sample PDF is accessible
+      - ./docs:/app/docs:ro
+
+    # Restart unless explicitly stopped
+    restart: unless-stopped
+
+    # Container health check (mirrors Dockerfile HEALTHCHECK)
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7860/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+    # Logging — keep last 10 files of 10 MB each
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+# Named volumes — persisted between `docker-compose down` / `up` cycles
+volumes:
+  chroma_data:
+    driver: local
+  upload_data:
+    driver: local
