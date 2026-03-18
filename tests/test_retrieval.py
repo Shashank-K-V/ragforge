@@ -19,15 +19,12 @@ Run integration tests too:
 
 from __future__ import annotations
 
-import json
-from datetime import datetime
 from pathlib import Path
-from unittest.mock import MagicMock, patch
 
 import pytest
 from langchain.schema import Document
 
-from app.models import DocumentInfo, DocumentType
+from app.models import DocumentType
 
 
 # ======================================================================= #

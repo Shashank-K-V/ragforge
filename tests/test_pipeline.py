@@ -13,8 +13,6 @@ Run with:
 
 from __future__ import annotations
 
-from unittest.mock import patch
-
 import pytest
 
 from app.models import ConfidenceLevel, QueryResponse, SourceChunk
@@ -159,8 +157,6 @@ class TestRunRagPipeline:
 
         # Also patch the LCEL chain so it calls our fake
         def _fake_pipeline(question, top_k=None, document_id=None):
-            from app.pipeline import _build_context_string, _compute_confidence
-
             chunks = self._MOCK_CHUNKS
             return QueryResponse(
                 question=question,
