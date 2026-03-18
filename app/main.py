@@ -22,7 +22,6 @@ Design notes
 
 from __future__ import annotations
 
-import io
 import logging
 import os
 import time
@@ -35,7 +34,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.config import settings
-from app.evaluation import run_evaluation
 from app.ingestion import ingest_file
 from app.models import (
     ComponentStatus,

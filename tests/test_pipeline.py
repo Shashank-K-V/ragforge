@@ -13,7 +13,7 @@ Run with:
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -21,7 +21,6 @@ from app.models import ConfidenceLevel, QueryResponse, SourceChunk
 from app.pipeline import (
     _build_context_string,
     _compute_confidence,
-    run_rag_pipeline,
 )
 
 
@@ -155,9 +154,6 @@ class TestRunRagPipeline:
         class _FakeLLM:
             def invoke(self, inputs):
                 return fake_chain_result
-
-        # Patch at the module level where the chain is built
-        import langchain_core.output_parsers as parsers
 
         monkeypatch.setattr("app.pipeline.get_llm", lambda: _FakeLLM())
 

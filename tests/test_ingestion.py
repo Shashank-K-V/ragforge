@@ -9,8 +9,6 @@ well-formed LangChain Document chunks with the expected metadata.
 from __future__ import annotations
 
 import io
-import textwrap
-from pathlib import Path
 
 import pytest
 
