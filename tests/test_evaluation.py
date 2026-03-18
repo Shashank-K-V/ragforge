@@ -23,7 +23,9 @@ from app.models import (
 # ======================================================================= #
 
 
-def _make_query_response(answer: str, doc_ids: list[str] | None = None) -> QueryResponse:
+def _make_query_response(
+    answer: str, doc_ids: list[str] | None = None
+) -> QueryResponse:
     doc_ids = doc_ids or ["default-doc"]
     chunks = [
         SourceChunk(
@@ -189,7 +191,9 @@ class TestEvaluateSingleCase:
             expected_source_document_id=None,
         )
 
-        with patch("app.evaluation.run_rag_pipeline", side_effect=RuntimeError("LLM down")):
+        with patch(
+            "app.evaluation.run_rag_pipeline", side_effect=RuntimeError("LLM down")
+        ):
             result = _evaluate_single_case(case)
 
         assert result.retrieved_chunks == 0
@@ -218,7 +222,9 @@ class TestRunEvaluation:
 
     def test_total_cases_matches_input(self):
         cases = TEST_CASES[:3]
-        mock_resp = _make_query_response("retrieval generation context embedding model sentence cosine similarity vector")
+        mock_resp = _make_query_response(
+            "retrieval generation context embedding model sentence cosine similarity vector"
+        )
 
         with patch("app.evaluation.run_rag_pipeline", return_value=mock_resp):
             result = run_evaluation(test_cases=cases)

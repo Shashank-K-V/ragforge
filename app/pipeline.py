@@ -97,16 +97,14 @@ def _build_llm() -> Any:
     """
     if settings.LLM_PROVIDER == "openai":
         if not settings.OPENAI_API_KEY:
-            raise ValueError(
-                "LLM_PROVIDER=openai requires OPENAI_API_KEY to be set."
-            )
+            raise ValueError("LLM_PROVIDER=openai requires OPENAI_API_KEY to be set.")
         from langchain_openai import ChatOpenAI  # optional dependency
 
         logger.info("Using OpenAI LLM: %s", settings.OPENAI_MODEL)
         return ChatOpenAI(
             model=settings.OPENAI_MODEL,
             api_key=settings.OPENAI_API_KEY,
-            temperature=0.0,        # deterministic for QA
+            temperature=0.0,  # deterministic for QA
             max_tokens=512,
         )
 
@@ -125,7 +123,7 @@ def _build_llm() -> Any:
         huggingfacehub_api_token=settings.HUGGINGFACE_API_KEY,
         task="text-generation",
         max_new_tokens=512,
-        temperature=0.01,           # near-zero for deterministic QA
+        temperature=0.01,  # near-zero for deterministic QA
         repetition_penalty=1.1,
     )
 
@@ -158,10 +156,7 @@ def _build_context_string(chunks: list[SourceChunk]) -> str:
         source_ref = chunk.filename
         if chunk.page_number:
             source_ref += f" (page {chunk.page_number})"
-        parts.append(
-            f"[{i}] Source: {source_ref}\n"
-            f"{chunk.content.strip()}"
-        )
+        parts.append(f"[{i}] Source: {source_ref}\n{chunk.content.strip()}")
     return "\n\n---\n\n".join(parts)
 
 

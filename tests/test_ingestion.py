@@ -173,7 +173,7 @@ class TestLoadAndChunk:
             load_and_chunk(
                 document_id="d",
                 filename="empty.txt",
-                file_bytes=b"   \n  \t  ",   # whitespace only
+                file_bytes=b"   \n  \t  ",  # whitespace only
             )
 
     def test_unsupported_type_falls_back_to_txt(self):

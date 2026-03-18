@@ -182,7 +182,10 @@ async def health_check() -> HealthResponse:
 
     overall = (
         ComponentStatus.OK
-        if (vector_store_status == ComponentStatus.OK and llm_status == ComponentStatus.OK)
+        if (
+            vector_store_status == ComponentStatus.OK
+            and llm_status == ComponentStatus.OK
+        )
         else ComponentStatus.DEGRADED
     )
 

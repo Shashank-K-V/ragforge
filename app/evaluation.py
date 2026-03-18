@@ -102,7 +102,7 @@ def _evaluate_single_case(case: EvalTestCase) -> EvalCaseResult:
         response = run_rag_pipeline(
             question=case.question,
             top_k=4,
-            document_id=None,   # always search full corpus during eval
+            document_id=None,  # always search full corpus during eval
         )
         answer = response.answer
         retrieved_doc_ids = {c.document_id for c in response.source_documents}

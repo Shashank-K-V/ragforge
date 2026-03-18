@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     # API / server                                                         #
     # ------------------------------------------------------------------ #
     HOST: str = "0.0.0.0"
-    PORT: int = 7860          # 7860 is the default exposed port on HF Spaces
+    PORT: int = 7860  # 7860 is the default exposed port on HF Spaces
     DEBUG: bool = False
     LOG_LEVEL: str = "INFO"
 
@@ -72,14 +72,14 @@ class Settings(BaseSettings):
     # ------------------------------------------------------------------ #
     # Chunk size in *characters* (≈ 500 tokens for English prose at
     # ~4 chars/token).  Overlap preserves cross-boundary context.
-    CHUNK_SIZE: int = 2000        # ~500 tokens
-    CHUNK_OVERLAP: int = 200      # ~50 tokens
-    MAX_FILE_SIZE_MB: int = 50    # reject uploads larger than this
+    CHUNK_SIZE: int = 2000  # ~500 tokens
+    CHUNK_OVERLAP: int = 200  # ~50 tokens
+    MAX_FILE_SIZE_MB: int = 50  # reject uploads larger than this
 
     # ------------------------------------------------------------------ #
     # Retrieval                                                            #
     # ------------------------------------------------------------------ #
-    RETRIEVAL_TOP_K: int = 4      # number of chunks returned per query
+    RETRIEVAL_TOP_K: int = 4  # number of chunks returned per query
 
     # ------------------------------------------------------------------ #
     # Storage paths                                                        #
@@ -92,8 +92,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
-        case_sensitive=True,        # LLM_PROVIDER ≠ llm_provider
-        extra="ignore",             # silently ignore unknown env vars
+        case_sensitive=True,  # LLM_PROVIDER ≠ llm_provider
+        extra="ignore",  # silently ignore unknown env vars
     )
 
 

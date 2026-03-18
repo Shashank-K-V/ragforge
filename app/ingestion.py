@@ -78,8 +78,7 @@ def _extract_text_from_pdf(file_bytes: bytes) -> list[tuple[str, int]]:
         import PyPDF2  # imported lazily so the app still starts without it
     except ImportError as exc:
         raise RuntimeError(
-            "PyPDF2 is required for PDF ingestion. "
-            "Install it with: pip install PyPDF2"
+            "PyPDF2 is required for PDF ingestion. Install it with: pip install PyPDF2"
         ) from exc
 
     pages: list[tuple[str, int]] = []

@@ -233,12 +233,10 @@ def similarity_search(
 
     # similarity_search_with_relevance_scores returns (Document, score) pairs.
     # Scores are cosine similarities in [0, 1] when embeddings are normalised.
-    results: list[tuple[Document, float]] = (
-        vs.similarity_search_with_relevance_scores(
-            query=query,
-            k=top_k,
-            filter=where_filter,
-        )
+    results: list[tuple[Document, float]] = vs.similarity_search_with_relevance_scores(
+        query=query,
+        k=top_k,
+        filter=where_filter,
     )
 
     source_chunks: list[SourceChunk] = []

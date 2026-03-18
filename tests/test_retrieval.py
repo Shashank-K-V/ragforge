@@ -62,7 +62,11 @@ def mock_embedding_model():
         def embed_documents(self, texts: list[str]) -> list[list[float]]:
             # Deterministic: hash the text to seed the RNG
             return [
-                list(np.random.default_rng(abs(hash(t)) % (2**32)).random(384).astype(float))
+                list(
+                    np.random.default_rng(abs(hash(t)) % (2**32))
+                    .random(384)
+                    .astype(float)
+                )
                 for t in texts
             ]
 
@@ -98,7 +102,7 @@ class TestDocumentRegistry:
         import time
 
         register_document("id-a", "a.txt", DocumentType.TXT, 5)
-        time.sleep(0.01)   # ensure distinct timestamps
+        time.sleep(0.01)  # ensure distinct timestamps
         register_document("id-b", "b.txt", DocumentType.TXT, 3)
 
         docs = list_documents()
@@ -134,7 +138,9 @@ class TestDocumentRegistry:
 
 
 class TestVectorStoreHealth:
-    def test_health_returns_dict_with_status(self, isolated_settings, monkeypatch, mock_embedding_model):
+    def test_health_returns_dict_with_status(
+        self, isolated_settings, monkeypatch, mock_embedding_model
+    ):
         monkeypatch.setattr("app.retrieval._embedding_model", mock_embedding_model)
         from app.retrieval import check_vector_store_health
 
@@ -202,7 +208,9 @@ class TestEmbedAndSearch:
         # Top result should be the biology chunk
         assert results[0].document_id in ("bio-doc", "cs-doc")
 
-    def test_empty_embed_does_not_crash(self, isolated_settings, monkeypatch, mock_embedding_model):
+    def test_empty_embed_does_not_crash(
+        self, isolated_settings, monkeypatch, mock_embedding_model
+    ):
         monkeypatch.setattr("app.retrieval._embedding_model", mock_embedding_model)
         from app.retrieval import embed_and_store
 

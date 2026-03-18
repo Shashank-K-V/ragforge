@@ -39,6 +39,7 @@ def isolate_environment(monkeypatch, tmp_path):
 
     # Patch the registry path to point to tmp_path
     from pathlib import Path
+
     monkeypatch.setattr(
         "app.retrieval._REGISTRY_PATH",
         Path(chroma_dir) / "document_registry.json",

@@ -133,7 +133,9 @@ class TestRunRagPipeline:
 
     _MOCK_CHUNKS = [
         _make_chunk(content="RAG retrieves relevant context.", similarity_score=0.85),
-        _make_chunk(content="LLMs generate answers from context.", similarity_score=0.78),
+        _make_chunk(
+            content="LLMs generate answers from context.", similarity_score=0.78
+        ),
     ]
     _MOCK_ANSWER = "RAG combines retrieval with language model generation."
 
