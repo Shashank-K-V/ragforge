@@ -206,7 +206,7 @@ def load_and_chunk(
         # TXT and UNKNOWN both fall through to plain-text extraction
         pages = _extract_text_from_txt(file_bytes)
 
-    if not pages:
+    if not pages or not any(text.strip() for text, _ in pages):
         raise ValueError(f"No extractable text found in '{filename}'.")
 
     # --- Build LangChain Documents (one per page before chunking) ---
