@@ -15,18 +15,17 @@ Design decisions
 from __future__ import annotations
 
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
-
 
 # ======================================================================= #
 #  Shared / primitive types                                                 #
 # ======================================================================= #
 
 
-class DocumentType(str, Enum):
+class DocumentType(StrEnum):
     """Supported ingested document types."""
 
     PDF = "pdf"
@@ -35,7 +34,7 @@ class DocumentType(str, Enum):
     UNKNOWN = "unknown"
 
 
-class ConfidenceLevel(str, Enum):
+class ConfidenceLevel(StrEnum):
     """
     Heuristic confidence bucket derived from the retrieval similarity scores.
 
@@ -173,7 +172,7 @@ class SourceChunk(BaseModel):
         ...,
         ge=0.0,
         le=1.0,
-        description="Cosine similarity score between the query and this chunk (0–1).",
+        description="Cosine similarity score between the query and this chunk (0-1).",
     )
     page_number: int | None = Field(
         default=None,
@@ -285,7 +284,7 @@ class EvaluationResponse(BaseModel):
 # ======================================================================= #
 
 
-class ComponentStatus(str, Enum):
+class ComponentStatus(StrEnum):
     OK = "ok"
     DEGRADED = "degraded"
     DOWN = "down"

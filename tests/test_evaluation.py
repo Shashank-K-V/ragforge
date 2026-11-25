@@ -17,7 +17,6 @@ from app.models import (
     SourceChunk,
 )
 
-
 # ======================================================================= #
 #  Helpers                                                                  #
 # ======================================================================= #
@@ -222,9 +221,13 @@ class TestRunEvaluation:
 
     def test_total_cases_matches_input(self):
         cases = TEST_CASES[:3]
-        mock_resp = _make_query_response(
-            "retrieval generation context embedding model sentence cosine similarity vector"
+        answer = " ".join(
+            [
+                "retrieval generation context embedding model",
+                "sentence cosine similarity vector",
+            ]
         )
+        mock_resp = _make_query_response(answer)
 
         with patch("app.evaluation.run_rag_pipeline", return_value=mock_resp):
             result = run_evaluation(test_cases=cases)

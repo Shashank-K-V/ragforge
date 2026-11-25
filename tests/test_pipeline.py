@@ -13,6 +13,8 @@ Run with:
 
 from __future__ import annotations
 
+from typing import ClassVar
+
 import pytest
 
 from app.models import ConfidenceLevel, QueryResponse, SourceChunk
@@ -20,7 +22,6 @@ from app.pipeline import (
     _build_context_string,
     _compute_confidence,
 )
-
 
 # ======================================================================= #
 #  Fixtures                                                                 #
@@ -131,7 +132,7 @@ class TestComputeConfidence:
 class TestRunRagPipeline:
     """Verify pipeline orchestration with mocked retrieval and LLM."""
 
-    _MOCK_CHUNKS = [
+    _MOCK_CHUNKS: ClassVar[list[SourceChunk]] = [
         _make_chunk(content="RAG retrieves relevant context.", similarity_score=0.85),
         _make_chunk(
             content="LLMs generate answers from context.", similarity_score=0.78

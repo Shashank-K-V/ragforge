@@ -107,7 +107,7 @@ def _evaluate_single_case(case: EvalTestCase) -> EvalCaseResult:
         answer = response.answer
         retrieved_doc_ids = {c.document_id for c in response.source_documents}
         chunk_count = len(response.source_documents)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         logger.error("Pipeline error during eval for '%s': %s", case.question, exc)
         answer = ""
         retrieved_doc_ids = set()

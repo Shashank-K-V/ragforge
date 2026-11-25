@@ -21,7 +21,6 @@ from app.ingestion import (
 )
 from app.models import DocumentType
 
-
 # ======================================================================= #
 #  _detect_document_type                                                    #
 # ======================================================================= #
@@ -228,7 +227,7 @@ class TestSaveUpload:
         monkeypatch.setattr("app.ingestion.settings.UPLOAD_DIR", str(tmp_path))
         monkeypatch.setattr("app.ingestion.settings.MAX_FILE_SIZE_MB", 10)
         content = b"Test file content."
-        doc_id, saved_path = save_upload("test.txt", io.BytesIO(content))
+        _doc_id, saved_path = save_upload("test.txt", io.BytesIO(content))
         assert saved_path.exists()
         assert saved_path.read_bytes() == content
 

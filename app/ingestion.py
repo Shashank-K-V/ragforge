@@ -87,7 +87,7 @@ def _extract_text_from_pdf(file_bytes: bytes) -> list[tuple[str, int]]:
     for page_num, page in enumerate(reader.pages, start=1):
         try:
             text = page.extract_text() or ""
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             logger.warning("Could not extract text from PDF page %d: %s", page_num, exc)
             text = ""
         if text.strip():

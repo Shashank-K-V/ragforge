@@ -26,7 +26,6 @@ from langchain.schema import Document
 
 from app.models import DocumentType
 
-
 # ======================================================================= #
 #  Fixtures                                                                 #
 # ======================================================================= #
@@ -98,8 +97,9 @@ class TestDocumentRegistry:
         assert docs[0].chunk_count == 10
 
     def test_multiple_documents_listed_newest_first(self, isolated_settings):
-        from app.retrieval import list_documents, register_document
         import time
+
+        from app.retrieval import list_documents, register_document
 
         register_document("id-a", "a.txt", DocumentType.TXT, 5)
         time.sleep(0.01)  # ensure distinct timestamps

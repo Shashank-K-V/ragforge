@@ -115,7 +115,7 @@ def _build_llm() -> Any:
             "Get a free token at https://huggingface.co/settings/tokens"
         )
 
-    from langchain_huggingface import HuggingFaceEndpoint  # noqa: PLC0415
+    from langchain_huggingface import HuggingFaceEndpoint
 
     logger.info("Using HuggingFace LLM: %s", settings.HF_MODEL_ID)
     return HuggingFaceEndpoint(
@@ -130,7 +130,7 @@ def _build_llm() -> Any:
 
 def get_llm() -> Any:
     """Return the singleton LLM instance, building it on first call."""
-    global _llm_instance  # noqa: PLW0603
+    global _llm_instance
     if _llm_instance is None:
         _llm_instance = _build_llm()
     return _llm_instance

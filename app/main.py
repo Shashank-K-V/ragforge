@@ -25,8 +25,8 @@ from __future__ import annotations
 import logging
 import os
 import time
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator
 
 import uvicorn
 from fastapi import FastAPI, File, HTTPException, Query, UploadFile, status
@@ -38,8 +38,8 @@ from app.ingestion import ingest_file
 from app.models import (
     ComponentStatus,
     DocumentListResponse,
-    DocumentUploadResponse,
     DocumentType,
+    DocumentUploadResponse,
     ErrorResponse,
     EvaluationResponse,
     HealthResponse,
@@ -80,7 +80,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     Warm up expensive singletons at startup so the first real request
     doesn't pay the initialisation cost.
     """
-    global _startup_time  # noqa: PLW0603
+    global _startup_time
     _startup_time = time.time()
 
     logger.info("RAGForge starting up…")
@@ -91,7 +91,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         get_embedding_model()
         get_vector_store()
         logger.info("Vector store and embedding model ready.")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         # Non-fatal: the app still starts, endpoints will fail gracefully
         logger.warning("Warm-up failed (will retry on first request): %s", exc)
 
@@ -227,7 +227,9 @@ async def health_check() -> HealthResponse:
     },
 )
 async def upload_document(
-    file: UploadFile = File(..., description="PDF, TXT, or DOCX file to ingest"),
+    file: UploadFile = File(  # noqa: B008 - FastAPI uses this for dependency metadata
+        ..., description="PDF, TXT, or DOCX file to ingest"
+    ),
 ) -> DocumentUploadResponse:
     """
     Upload a document and trigger the full ingestion pipeline.
@@ -281,7 +283,7 @@ async def upload_document(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=str(exc),
         ) from exc
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         logger.exception("Unexpected error during ingestion of '%s'", filename)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -297,7 +299,7 @@ async def upload_document(
     # --- Embed and store ---
     try:
         embed_and_store(chunks)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         logger.exception("Error embedding document '%s'", filename)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -387,7 +389,7 @@ async def query_documents(body: QueryRequest) -> QueryResponse:
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(exc),
         ) from exc
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         logger.exception("RAG pipeline error for question='%s'", body.question[:80])
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -426,7 +428,7 @@ async def evaluate(
     * **mean_latency_ms** — average end-to-end latency per case.
 
     Note: this endpoint calls the LLM for every test case.  With 5 cases and
-    a remote LLM, expect ~10–30 seconds total.
+    a remote LLM, expect ~10-30 seconds total.
     """
     docs = list_documents()
     if not docs:
@@ -436,11 +438,11 @@ async def evaluate(
         )
 
     try:
-        from app.evaluation import TEST_CASES, run_evaluation  # noqa: PLC0415
+        from app.evaluation import TEST_CASES, run_evaluation
 
         cases = TEST_CASES[:max_cases]
         result = run_evaluation(test_cases=cases)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         logger.exception("Evaluation error")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

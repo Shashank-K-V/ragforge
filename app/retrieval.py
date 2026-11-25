@@ -31,7 +31,7 @@ from __future__ import annotations
 import json
 import logging
 import time
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -63,7 +63,7 @@ def get_embedding_model() -> HuggingFaceEmbeddings:
     HuggingFaceEmbeddings downloads the model weights on first use and
     caches them in ~/.cache/huggingface.  Subsequent calls are instant.
     """
-    global _embedding_model  # noqa: PLW0603
+    global _embedding_model
     if _embedding_model is None:
         logger.info("Loading embedding model: %s", settings.EMBEDDING_MODEL)
         _embedding_model = HuggingFaceEmbeddings(
@@ -88,7 +88,7 @@ def get_vector_store() -> Chroma:
     Return the singleton Chroma vector store, creating the persisted
     collection if it doesn't already exist.
     """
-    global _vector_store  # noqa: PLW0603
+    global _vector_store
     if _vector_store is None:
         persist_dir = settings.CHROMA_PERSIST_DIR
         Path(persist_dir).mkdir(parents=True, exist_ok=True)
@@ -141,7 +141,7 @@ def register_document(
         "filename": filename,
         "document_type": document_type.value,
         "chunk_count": chunk_count,
-        "ingested_at": datetime.utcnow().isoformat(),
+        "ingested_at": datetime.now(UTC).isoformat(),
     }
     _save_registry(registry)
     logger.debug("Registered document %s (%s)", document_id, filename)
@@ -272,8 +272,8 @@ def check_vector_store_health() -> dict[str, Any]:
     """
     try:
         vs = get_vector_store()
-        count = vs._collection.count()  # noqa: SLF001  (internal but stable)
+        count = vs._collection.count()
         return {"status": "ok", "total_chunks": count}
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         logger.error("Vector store health check failed: %s", exc)
         return {"status": "down", "error": str(exc)}

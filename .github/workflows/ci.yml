@@ -45,7 +45,7 @@ jobs:
       - name: Install linting tools
         run: |
           pip install --upgrade pip
-          pip install ruff mypy
+          pip install ruff==0.15.6 mypy
 
       - name: Run ruff (linter + formatter check)
         run: |
